@@ -9,6 +9,10 @@ TagManager:
   - Die
   - Arrow
   - HealthBarPartial
+  - PlayerAnim
+  - EnemyAnim
+  - Enemy
+  - EnemyDie
   layers:
   - Default
   - TransparentFX
