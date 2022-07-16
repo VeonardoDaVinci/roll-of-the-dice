@@ -25,11 +25,11 @@ public class PlayerController : MonoBehaviour
         if (sprites.sprite == sprite1)
         {
             sprites.sprite = sprite2;
+            
+            return;
         }
-        else if (sprites.sprite == sprite2)
-        {
-            sprites.sprite = sprite1;
-        }
+        
+        sprites.sprite = sprite1;
     }
 
     private void OnEnable()

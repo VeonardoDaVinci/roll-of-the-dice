@@ -42,10 +42,38 @@ public class GameManager : SingletonPersistent<GameManager>
     public int diceCount = 0;
     private IHealthBar _healthBar;
 
+    private void SetDiceAsNotActiveByDefault()
+    {
+        for (int die = 0; die < dice.Length; die++)
+        {
+            dice[die].SetActive(false);
+        }
+    }
+
     private void Start()
     {
         LoadHealthBar();
+        
         bpm = 50;
+        
+        LoadComponentsFromScreen();
+        
+        ChangeWord();
+        
+        StartRythm();
+
+        SetDiceAsNotActiveByDefault();
+
+    }
+
+    private void StartRythm()
+    {
+        InvokeRepeating("PlayRythm", 60f / bpm, 60f / bpm);
+        InvokeRepeating("ChangeLetter", 30f / bpm, 30f / bpm);
+    }
+
+    private void LoadComponentsFromScreen()
+    {
         audioData = GetComponent<AudioSource>();
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -54,15 +82,6 @@ public class GameManager : SingletonPersistent<GameManager>
         dice = GameObject.FindGameObjectsWithTag("Die");
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
-        ChangeWord();
-        InvokeRepeating("PlayRythm", 60f/bpm, 60f/bpm);
-        InvokeRepeating("ChangeLetter", 30f/bpm, 30f/bpm);
-        
-        for(int die=0; die<dice.Length; die++)
-        {
-            dice[die].SetActive(false);
-        }
-
     }
 
     private void ChangeWord()
