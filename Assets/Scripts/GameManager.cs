@@ -42,19 +42,11 @@ public class GameManager : SingletonPersistent<GameManager>
     public int diceCount = 0;
     private IHealthBar _healthBar;
 
-    private void SetDiceAsNotActiveByDefault()
-    {
-        for (int die = 0; die < dice.Length; die++)
-        {
-            dice[die].SetActive(false);
-        }
-    }
-
     private void Start()
     {
         LoadHealthBar();
-        
-        bpm = 50;
+
+        bpm = 10;
         
         LoadComponentsFromScreen();
         
@@ -64,6 +56,14 @@ public class GameManager : SingletonPersistent<GameManager>
 
         SetDiceAsNotActiveByDefault();
 
+    }
+
+    private void SetDiceAsNotActiveByDefault()
+    {
+        for (int die = 0; die < dice.Length; die++)
+        {
+            dice[die].SetActive(false);
+        }
     }
 
     private void StartRythm()
@@ -111,7 +111,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private bool CheckForLetterInTime()
     {
 
-        if (Time.time - startTime <= 2f && !pressed)
+        if (Time.time - startTime <= (60f/bpm) && !pressed)
         {
             if (pressedChar == currentChar && currentChar != ' ')
             {
@@ -130,30 +130,50 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void ChangeLetter()
     {
-        player.ChangeSprite();
-        enemy.ChangeSprite();
+        AnimateCharactersMovement();
+        PlayDrum();
+        MoveArrowToNextLetter();
 
-        pressedChar = ' ';
-        pressed = false;
-        audioData.PlayOneShot(drum1);
-        arrow.position = new Vector2(arrow.position.x+23f, arrow.position.y);
         if (letterIndex >= currentWord.Length)
         {
             letterIndex = 0;
             ChangeWord();
         }
 
-        currentChar = currentWord[letterIndex];
-        letterObject.text = currentChar.ToString();
-
+        pressedChar = ' ';
+        pressed = false;
+        
+        ShowLetterToType();
+        
         startTime = Time.time;
+        
         letterIndex++;
 
-        
-            
         _healthBar.DecreaseHealth(); // tylko dla testu tutaj odpalam, bo nie wiem gdzie
     }
-    
+
+    private void ShowLetterToType()
+    {
+        currentChar = currentWord[letterIndex];
+        letterObject.text = currentChar.ToString();
+    }
+
+    private void MoveArrowToNextLetter()
+    {
+        arrow.position = new Vector2(arrow.position.x + 23f, arrow.position.y);
+    }
+
+    private void PlayDrum()
+    {
+        audioData.PlayOneShot(drum1);
+    }
+
+    private void AnimateCharactersMovement()
+    {
+        player.ChangeSprite();
+        enemy.ChangeSprite();
+    }
+
     private void LoadHealthBar()
     {
         _healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar.IHealthBar>();
