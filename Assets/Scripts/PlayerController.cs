@@ -7,15 +7,31 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private GameManager gameManager;
-    private Animation anim;
+    public SpriteRenderer sprites;
+    public Sprite sprite1;
+    public Sprite sprite2;
+
     private void Start()
     {
-        anim = GetComponent<Animation>();
+        sprites = GameObject.FindGameObjectWithTag("PlayerAnim").GetComponent<SpriteRenderer>();
         gameManager = GameManager.Instance;
         //anim.Play("cezar-anim");
         //anim["cezar-anim"].speed = gameManager.bpm/(60*4);
-        anim["cezar-anim"].speed = 0.1f;
+        //sprites.speed = gameManager.bpm/(60*4);
     }
+
+    public void ChangeSprite()
+    {
+        if (sprites.sprite == sprite1)
+        {
+            sprites.sprite = sprite2;
+        }
+        else if (sprites.sprite == sprite2)
+        {
+            sprites.sprite = sprite1;
+        }
+    }
+
     private void OnEnable()
     {
         Keyboard.current.onTextInput += OnTextInput;

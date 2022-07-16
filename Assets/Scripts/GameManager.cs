@@ -16,7 +16,10 @@ public class GameManager : SingletonPersistent<GameManager>
     public int letterIndex = 0;
     public char pressedChar;
 
-    public float bpm = 100;
+    public float bpm;
+
+    public PlayerController player;
+    public EnemyBehaviour enemy;
 
     public RectTransform arrow;
 
@@ -42,8 +45,12 @@ public class GameManager : SingletonPersistent<GameManager>
     private void Start()
     {
         LoadHealthBar();
-        
+        bpm = 50;
         audioData = GetComponent<AudioSource>();
+
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyBehaviour>();
+
         dice = GameObject.FindGameObjectsWithTag("Die");
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
@@ -104,6 +111,8 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void ChangeLetter()
     {
+        player.ChangeSprite();
+        enemy.ChangeSprite();
 
         pressedChar = ' ';
         pressed = false;
