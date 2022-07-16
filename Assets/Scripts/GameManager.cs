@@ -24,7 +24,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private float startTime;
     private bool pressed;
 
-    public int succesfulButtoPresses = -1;
+    public int succesfulButtonPresses = -1;
 
     private GameObject[] dice;
     public int diceCount = 0;
@@ -35,7 +35,7 @@ public class GameManager : SingletonPersistent<GameManager>
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
         ChangeWord();
-        Debug.Log(succesfulButtoPresses);
+        Debug.Log(succesfulButtonPresses);
         InvokeRepeating("ChangeLetter", 2f, 2f);
         
         for(int die=0; die<dice.Length; die++)
@@ -47,13 +47,13 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void ChangeWord()
     {
-        if (succesfulButtoPresses == currentWord.Length)
+        if (succesfulButtonPresses == currentWord.Length)
         {
             diceCount++;
             dice[diceCount - 1].SetActive(true);
         }
         //Debug.Log(succesfulButtoPresses);
-        succesfulButtoPresses = 0;
+        succesfulButtonPresses = 0;
 
         System.Random rd = new System.Random();
         wordIndex = rd.Next(0, 999);
@@ -68,7 +68,7 @@ public class GameManager : SingletonPersistent<GameManager>
         {
             if (pressedChar == currentChar && currentChar != ' ')
             {
-                succesfulButtoPresses++;
+                succesfulButtonPresses++;
                 score += 100;
                 pressed = true;
                 return true;
@@ -106,7 +106,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private void Update()
     {
         CheckForLetterInTime();
-        Debug.Log(succesfulButtoPresses);
+        Debug.Log(succesfulButtonPresses);
         Debug.Log(currentWord.Length);
         //Debug.Log(dice.Length);
     }
