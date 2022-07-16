@@ -19,6 +19,8 @@ public class GameManager : SingletonPersistent<GameManager>
     public char pressedChar;
 
     //private Color green = new Color
+    public TextMeshProUGUI messegeObject;
+    private TextMeshProUGUI scoreObject;
 
     public float bpm;
 
@@ -108,6 +110,8 @@ public class GameManager : SingletonPersistent<GameManager>
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         typedLetterObject = GameObject.FindGameObjectWithTag("TypedLetter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
+        messegeObject = GameObject.FindGameObjectWithTag("Messege").GetComponent<TextMeshProUGUI>();
+        scoreObject = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
     }
 
     private void SetWord()
@@ -121,12 +125,18 @@ public class GameManager : SingletonPersistent<GameManager>
         wordObject.text = currentWord;
     }
 
+    private void SetMessege(string messege)
+    {
+        messegeObject.text = messege;
+    }
+
     private void ChangeWord()
     {
         if (succesfulButtonPresses == currentWord.Length-1)
         {
             Debug.Log(succesfulButtonPresses);
             Debug.Log(currentWord);
+            score += 10;
             diceCount++;
             dice[diceCount - 1].SetActive(true);
             if (diceCount >= 6)
@@ -150,20 +160,64 @@ public class GameManager : SingletonPersistent<GameManager>
             enemyValueSum = 0;
             if (dice.Length > 0)
             {
+                Debug.Log(dice.Length);
                 for (int a = 0; a <= dice.Length-1; a++)
                 {
-                    dice[a].GetComponent<DiceBehaviour>().SetRandomValue();
-                    valueSum += dice[a].GetComponent<DiceBehaviour>().value;
+                    if (dice[a].activeSelf == true)
+                    {
+                        dice[a].GetComponent<DiceBehaviour>().SetRandomValue();
+                        valueSum += dice[a].GetComponent<DiceBehaviour>().value;
+                    }
                 }
             }
 
-            for(int b = 0; b <= enemyDice.Length; b++)
+            for(int b = 0; b <= enemyDice.Length-1; b++)
             {
                 enemyDice[b].GetComponent<DiceBehaviour>().SetRandomValue();
                 enemyValueSum += enemyDice[b].GetComponent<DiceBehaviour>().value;
 
             }
+
+            if (valueSum > enemyValueSum)
+            {
+                SetMessege("You've won. You keep your land");
+                score += 100;
+                StartCoroutine(RestartRound());
+            }
+            else if (valueSum < enemyValueSum)
+            {
+                SetMessege("I'm affraid you've lost a region");
+                _healthBar.DecreaseHealth();
+                score -= 10;
+                StartCoroutine(RestartRound());
+            }
+            else
+            {
+                SetMessege("A draw! Well that's anti-climactic");
+                score += 0;
+                StartCoroutine(RestartRound());
+            }
+
         }
+    }
+
+    private IEnumerator RestartRound()
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        diceCount = 0;
+
+        SetMessege("");
+
+        ChangeState();
+
+        SetWord();
+
+        StartRhythm();
+
+        ResetDiceState();
+
+        SetDiceAsNotActiveByDefault();
     }
 
     private void ChangeState()
@@ -190,7 +244,7 @@ public class GameManager : SingletonPersistent<GameManager>
             if (pressedChar == currentChar && currentChar != ' ')
             {
                 succesfulButtonPresses++;
-                score += 100;
+                //score += 100;
                 pressed = true;
                 return true;
             }
@@ -230,7 +284,28 @@ public class GameManager : SingletonPersistent<GameManager>
         
         letterIndex++;
 
-        _healthBar.DecreaseHealth(); // tylko dla testu tutaj odpalam, bo nie wiem gdzie
+        /*_healthBar.DecreaseHealth();*/ // tylko dla testu tutaj odpalam, bo nie wiem gdzie
+    }
+
+    private void ResetDiceState()
+    {
+        if (dice.Length > 0)
+        {
+            Debug.Log(dice.Length);
+            for (int a = 0; a <= dice.Length - 1; a++)
+            {
+                if (dice[a].activeSelf == true)
+                {
+                    dice[a].GetComponent<DiceBehaviour>().ResetState();
+                }
+            }
+        }
+
+        for (int b = 0; b <= enemyDice.Length - 1; b++)
+        {
+            enemyDice[b].GetComponent<DiceBehaviour>().ResetState();
+
+        }
     }
 
     private void ResetCurrentChar()
@@ -283,6 +358,7 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         CheckForLetterInTime();
         ShowTypedLetter();
+        scoreObject.text = score.ToString();
         Debug.Log(gameState);
         // Debug.Log(succesfulButtonPresses);
         // Debug.Log(currentWord.Length);

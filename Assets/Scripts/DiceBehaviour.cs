@@ -23,6 +23,11 @@ public class DiceBehaviour : MonoBehaviour
         diceAnimator.enabled = false;
         value = Random.Range(1, 6);
         diceRenderer.sprite = diceSprites[value - 1];
+    }
 
+    public void ResetState()
+    {
+        diceAnimator.enabled = true;
+        value = 0;
     }
 }
