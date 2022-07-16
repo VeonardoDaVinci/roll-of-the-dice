@@ -101,6 +101,7 @@ public class GameManager : SingletonPersistent<GameManager>
         enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyBehaviour>();
 
         dice = GameObject.FindGameObjectsWithTag("Die");
+        enemyDice = GameObject.FindGameObjectsWithTag("EnemyDie");
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         typedLetterObject = GameObject.FindGameObjectWithTag("TypedLetter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
@@ -148,6 +149,11 @@ public class GameManager : SingletonPersistent<GameManager>
                 {
                     dice[a].GetComponent<DiceBehaviour>().SetRandomValue();
                 }
+            }
+
+            for(int b = 0; b <= enemyDice.Length; b++)
+            {
+
             }
         }
     }
