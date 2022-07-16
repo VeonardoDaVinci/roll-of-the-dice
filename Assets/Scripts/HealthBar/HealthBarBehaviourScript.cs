@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using HealthBar.events;
-using ScoreScreen;
 using UnityEngine;
 
 namespace HealthBar
@@ -28,7 +25,6 @@ namespace HealthBar
         public HealthBarBehaviourScript()
         {
             InstantiateEvents();
-            BindGameOverEvent(); // @todo: to podpinanie powinno pewnie być poza tą klasą, może w GameManagerze
         }
 
         void Start()
@@ -60,11 +56,6 @@ namespace HealthBar
             {
                 GameOverEvent.Invoke();
             }
-        }
-
-        private void BindGameOverEvent()
-        {
-            GameOverEvent.AddListener(ScoreScreenEventsHandler.handleGameOverEvent);
         }
         
         private void HideNextBarPartial()

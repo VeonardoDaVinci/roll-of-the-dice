@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ScoreScreen
 {
@@ -6,7 +7,7 @@ namespace ScoreScreen
     {
         public static void handleGameOverEvent()
         {
-            Debug.Log("grrrraaa");
+            SceneManager.LoadScene("ScoreScreen");
         }
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using System;
 using HealthBar;
+using ScoreScreen;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -45,6 +46,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private void Start()
     {
         LoadHealthBar();
+        HandleGameOver();
 
         bpm = 20;
         
@@ -52,7 +54,7 @@ public class GameManager : SingletonPersistent<GameManager>
         
         ChangeWord();
         
-        StartRythm();
+        StartRhythm();
 
         SetDiceAsNotActiveByDefault();
 
@@ -66,10 +68,22 @@ public class GameManager : SingletonPersistent<GameManager>
         }
     }
 
-    private void StartRythm()
+    private void StartRhythm()
     {
         InvokeRepeating(nameof(ChangeLetter), 60f / bpm, 60f / bpm);
         InvokeRepeating(nameof(PlayRythm), 30f / bpm, 30f / bpm);
+    }
+    
+    private void StopRhythm()
+    {
+        CancelInvoke(nameof(ChangeLetter));
+        CancelInvoke(nameof(PlayRythm));
+    }
+
+    private void HandleGameOver()
+    {
+        // _healthBar.GameOverEvent.AddListener(ScoreScreenEventsHandler.handleGameOverEvent);
+        // _healthBar.GameOverEvent.AddListener(StopRhythm);
     }
 
     private void LoadComponentsFromScreen()
