@@ -24,20 +24,35 @@ public class GameManager : SingletonPersistent<GameManager>
     private float startTime;
     private bool pressed;
 
+    private int succesfulButtoPresses = 0;
 
-
-    private int diceCount;
+    private GameObject[] dice;
+    private int diceCount = 0;
 
     private void Start()
     {
+        dice = GameObject.FindGameObjectsWithTag("Die");
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
         ChangeWord();
         InvokeRepeating("ChangeLetter", 2f, 2f);
+        
+        for(int die=0; die<dice.Length; die++)
+        {
+            dice[die].SetActive(false);
+        }
+
     }
 
     private void ChangeWord()
     {
+        if (succesfulButtoPresses == currentWord.Length)
+        {
+            diceCount++;
+            dice[diceCount - 1].SetActive(true);
+        }
+        succesfulButtoPresses = 0;
+
         System.Random rd = new System.Random();
         wordIndex = rd.Next(0, 999);
         wordObject.text = Wordlist.SharedInstance.wordList[wordIndex].Replace(" ", "");
@@ -51,7 +66,7 @@ public class GameManager : SingletonPersistent<GameManager>
         {
             if (pressedChar == currentChar)
             {
-
+                succesfulButtoPresses++;
                 score += 100;
                 pressed = true;
                 return true;
@@ -66,15 +81,21 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void ChangeLetter()
     {
-        //letter.text = alphabet[letterIndex].ToString();
+
         pressedChar = ' ';
         pressed = false;
+
+        if (letterIndex >= currentWord.Length)
+        {
+            letterIndex = 0;
+            ChangeWord();
+        }
+
         currentChar = currentWord[letterIndex];
         letterObject.text = currentChar.ToString();
 
         startTime = Time.time;
         letterIndex++;
-        letterIndex %= currentWord.Length-1;
 
 
     }
@@ -84,5 +105,7 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         CheckForLetterInTime();
         Debug.Log(score);
+        Debug.Log(diceCount);
+        //Debug.Log(dice.Length);
     }
 }

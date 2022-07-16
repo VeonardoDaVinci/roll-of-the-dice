@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Letter
   - Word
+  - Die
   layers:
   - Default
   - TransparentFX
