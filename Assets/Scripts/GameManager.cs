@@ -45,7 +45,9 @@ public class GameManager : SingletonPersistent<GameManager>
     public int succesfulButtonPresses = 0;
 
     private GameObject[] dice;
+    private int valueSum = 0;
     private GameObject[] enemyDice;
+    private int enemyValueSum = 0;
 
     public int diceCount = 0;
     private IHealthBar _healthBar;
@@ -102,6 +104,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
         dice = GameObject.FindGameObjectsWithTag("Die");
         enemyDice = GameObject.FindGameObjectsWithTag("EnemyDie");
+        Debug.Log(enemyDice.Length);
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         typedLetterObject = GameObject.FindGameObjectWithTag("TypedLetter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
@@ -143,16 +146,21 @@ public class GameManager : SingletonPersistent<GameManager>
         else if (gameState == "hazard")
         {
             StopRhythm();
+            valueSum = 0;
+            enemyValueSum = 0;
             if (dice.Length > 0)
             {
                 for (int a = 0; a <= dice.Length-1; a++)
                 {
                     dice[a].GetComponent<DiceBehaviour>().SetRandomValue();
+                    valueSum += dice[a].GetComponent<DiceBehaviour>().value;
                 }
             }
 
             for(int b = 0; b <= enemyDice.Length; b++)
             {
+                enemyDice[b].GetComponent<DiceBehaviour>().SetRandomValue();
+                enemyValueSum += enemyDice[b].GetComponent<DiceBehaviour>().value;
 
             }
         }
