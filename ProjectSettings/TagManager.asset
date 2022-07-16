@@ -7,7 +7,11 @@ TagManager:
   - Letter
   - Word
   - Die
+<<<<<<< HEAD
   - Arrow
+=======
+  - HealthBarPartial
+>>>>>>> 41b82990c77701b4942d4946443b27dfe3a08e4c
   layers:
   - Default
   - TransparentFX
