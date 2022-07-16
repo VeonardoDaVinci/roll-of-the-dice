@@ -142,6 +142,8 @@ public class GameManager : SingletonPersistent<GameManager>
             pressedChar = ' ';
             pressed = false;
 
+            ResetCurrentChar();
+
             return;
         }
 
@@ -155,6 +157,12 @@ public class GameManager : SingletonPersistent<GameManager>
         letterIndex++;
 
         _healthBar.DecreaseHealth(); // tylko dla testu tutaj odpalam, bo nie wiem gdzie
+    }
+
+    private void ResetCurrentChar()
+    {
+        currentChar = ' ';
+        letterObject.text = currentChar.ToString();
     }
 
     private void ShowLetterToType()
