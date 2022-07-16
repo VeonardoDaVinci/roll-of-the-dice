@@ -16,15 +16,15 @@ public class GameManager : SingletonPersistent<GameManager>
     public char pressedChar;
 
     private TextMeshProUGUI wordObject;
-    public string currentWord = "ceasar";
+    public string currentWord;
     private int wordIndex = 0;
 
     public int score = 0;
 
     private float startTime;
-    private bool pressed;
+    private bool pressed = true;
 
-    public int succesfulButtonPresses = -1;
+    public int succesfulButtonPresses = 0;
 
     private GameObject[] dice;
     public int diceCount = 0;
@@ -35,7 +35,7 @@ public class GameManager : SingletonPersistent<GameManager>
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
         ChangeWord();
-        Debug.Log(succesfulButtonPresses);
+
         InvokeRepeating("ChangeLetter", 2f, 2f);
         
         for(int die=0; die<dice.Length; die++)
@@ -47,8 +47,10 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void ChangeWord()
     {
-        if (succesfulButtonPresses == currentWord.Length)
+        if (succesfulButtonPresses == currentWord.Length-1)
         {
+            Debug.Log(succesfulButtonPresses);
+            Debug.Log(currentWord);
             diceCount++;
             dice[diceCount - 1].SetActive(true);
         }

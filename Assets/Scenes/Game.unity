@@ -176,11 +176,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_Name
-      value: Die (2)
+      value: Die3
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
@@ -242,11 +242,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_Name
-      value: Die (3)
+      value: Die4
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
@@ -385,6 +385,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6981282638244250475, guid: c86b8992500f2a4459ed73aeb2303060, type: 3}
+      propertyPath: succesfulButtonPresses
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8140366115411686672, guid: c86b8992500f2a4459ed73aeb2303060, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -494,11 +498,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_Name
-      value: Die (4)
+      value: Die5
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
@@ -602,11 +606,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_Name
-      value: Die (1)
+      value: Die2
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
@@ -740,11 +744,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_Name
-      value: Die (5)
+      value: Die6
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
@@ -1267,7 +1271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_Name
-      value: Die
+      value: Die1
       objectReference: {fileID: 0}
     - target: {fileID: 6753318124490073407, guid: a728d2d367a790e4fb2845f384fa7eb6, type: 3}
       propertyPath: m_IsActive
