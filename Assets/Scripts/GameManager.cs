@@ -46,7 +46,7 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         LoadHealthBar();
 
-        bpm = 10;
+        bpm = 20;
         
         LoadComponentsFromScreen();
         
@@ -68,8 +68,8 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void StartRythm()
     {
-        InvokeRepeating("PlayRythm", 60f / bpm, 60f / bpm);
-        InvokeRepeating("ChangeLetter", 30f / bpm, 30f / bpm);
+        InvokeRepeating(nameof(ChangeLetter), 60f / bpm, 60f / bpm);
+        InvokeRepeating(nameof(PlayRythm), 30f / bpm, 30f / bpm);
     }
 
     private void LoadComponentsFromScreen()
@@ -134,7 +134,7 @@ public class GameManager : SingletonPersistent<GameManager>
         PlayDrum();
         MoveArrowToNextLetter();
 
-        if (letterIndex >= currentWord.Length)
+        if (letterIndex >= (currentWord.Length - 1))
         {
             letterIndex = 0;
             ChangeWord();
@@ -182,8 +182,8 @@ public class GameManager : SingletonPersistent<GameManager>
     private void Update()
     {
         CheckForLetterInTime();
-        Debug.Log(succesfulButtonPresses);
-        Debug.Log(currentWord.Length);
+        // Debug.Log(succesfulButtonPresses);
+        // Debug.Log(currentWord.Length);
         //Debug.Log(dice.Length);
     }
 }
