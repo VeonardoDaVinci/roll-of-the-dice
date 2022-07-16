@@ -9,15 +9,24 @@ using TMPro;
 public class GameManager : SingletonPersistent<GameManager>
 {
     public string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     public TextMeshProUGUI letterObject;
     public char currentChar;
     private int letterIndex = 0;
+    public char pressedChar;
+
     private TextMeshProUGUI wordObject;
     public string currentWord;
     private int wordIndex = 0;
+
     public int score = 0;
-    public char pressedChar;
+
     private float startTime;
+    private bool pressed;
+
+
+
+    private int diceCount;
 
     private void Start()
     {
@@ -37,25 +46,20 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private bool CheckForLetterInTime()
     {
-        
-        //if (Time.time - start_time <= 2f)
-        //{
-        //    if (pressedChar == currentChar)
-        //    {
 
-        //        score += 100;
-        //        return true;
-        //    }
-        //}
-        //else if (Time.time -start_time > 2f)
-        //{
-        //    return false;
-        //}
-        //return false;
-        if (pressedChar == currentChar)
+        if (Time.time - startTime <= 2f && !pressed)
         {
-            score += 100;
-            return true;
+            if (pressedChar == currentChar)
+            {
+
+                score += 100;
+                pressed = true;
+                return true;
+            }
+        }
+        else if (Time.time - startTime > 2f)
+        {
+            return false;
         }
         return false;
     }
@@ -64,13 +68,13 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         //letter.text = alphabet[letterIndex].ToString();
         pressedChar = ' ';
+        pressed = false;
         currentChar = currentWord[letterIndex];
         letterObject.text = currentChar.ToString();
 
         startTime = Time.time;
-        CheckForLetterInTime();
         letterIndex++;
-        letterIndex %= currentWord.Length;
+        letterIndex %= currentWord.Length-1;
 
 
     }
@@ -78,6 +82,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void Update()
     {
-        Debug.Log(startTime);
+        CheckForLetterInTime();
+        Debug.Log(score);
     }
 }
