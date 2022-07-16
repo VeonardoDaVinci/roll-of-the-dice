@@ -12,11 +12,11 @@ public class GameManager : SingletonPersistent<GameManager>
 
     public TextMeshProUGUI letterObject;
     public char currentChar;
-    private int letterIndex = 0;
+    public int letterIndex = 0;
     public char pressedChar;
 
     private TextMeshProUGUI wordObject;
-    public string currentWord;
+    public string currentWord = "ceasar";
     private int wordIndex = 0;
 
     public int score = 0;
@@ -24,10 +24,10 @@ public class GameManager : SingletonPersistent<GameManager>
     private float startTime;
     private bool pressed;
 
-    private int succesfulButtoPresses = 0;
+    public int succesfulButtoPresses = -1;
 
     private GameObject[] dice;
-    private int diceCount = 0;
+    public int diceCount = 0;
 
     private void Start()
     {
@@ -35,6 +35,7 @@ public class GameManager : SingletonPersistent<GameManager>
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
         ChangeWord();
+        Debug.Log(succesfulButtoPresses);
         InvokeRepeating("ChangeLetter", 2f, 2f);
         
         for(int die=0; die<dice.Length; die++)
@@ -51,6 +52,7 @@ public class GameManager : SingletonPersistent<GameManager>
             diceCount++;
             dice[diceCount - 1].SetActive(true);
         }
+        //Debug.Log(succesfulButtoPresses);
         succesfulButtoPresses = 0;
 
         System.Random rd = new System.Random();
@@ -64,7 +66,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
         if (Time.time - startTime <= 2f && !pressed)
         {
-            if (pressedChar == currentChar)
+            if (pressedChar == currentChar && currentChar != ' ')
             {
                 succesfulButtoPresses++;
                 score += 100;
@@ -104,8 +106,8 @@ public class GameManager : SingletonPersistent<GameManager>
     private void Update()
     {
         CheckForLetterInTime();
-        Debug.Log(score);
-        Debug.Log(diceCount);
+        Debug.Log(succesfulButtoPresses);
+        Debug.Log(currentWord.Length);
         //Debug.Log(dice.Length);
     }
 }
