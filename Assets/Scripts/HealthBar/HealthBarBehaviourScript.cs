@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HealthBar.events;
+using ScoreScreen;
 using UnityEngine;
 
 namespace HealthBar
@@ -8,6 +10,7 @@ namespace HealthBar
     internal interface IHealthBar
     {
         public void DecreaseHealth();
+        public GameOverEvent GameOverEvent { get; }
     }
     
     public class HealthBarBehaviourScript : MonoBehaviour, IHealthBar
@@ -20,11 +23,24 @@ namespace HealthBar
 
         private HealthValue _health;
 
+        public GameOverEvent GameOverEvent { get; private set; }
+
+        public HealthBarBehaviourScript()
+        {
+            InstantiateEvents();
+            BindGameOverEvent(); // @todo: to podpinanie powinno pewnie być poza tą klasą, może w GameManagerze
+        }
+
         void Start()
         {
             LoadPartials();
 
             _health = new HealthValue(MaxHealthValue, HealthDecreaseStep);
+        }
+
+        private void InstantiateEvents()
+        {
+            GameOverEvent = new GameOverEvent();
         }
 
         public void DecreaseHealth()
@@ -42,10 +58,15 @@ namespace HealthBar
             }
             catch (HealthValueReachedZeroException e)
             {
-                // przegraliśmy, co teraz? :p
+                GameOverEvent.Invoke();
             }
         }
 
+        private void BindGameOverEvent()
+        {
+            GameOverEvent.AddListener(ScoreScreenEventsHandler.handleGameOverEvent);
+        }
+        
         private void HideNextBarPartial()
         {
             var partialNumber = _health.GetTakenHitsCount() + 1;
