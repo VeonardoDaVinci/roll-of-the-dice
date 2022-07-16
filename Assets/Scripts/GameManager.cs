@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using System;
+using HealthBar;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -36,9 +37,12 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private GameObject[] dice;
     public int diceCount = 0;
+    private IHealthBar _healthBar;
 
     private void Start()
     {
+        LoadHealthBar();
+        
         audioData = GetComponent<AudioSource>();
         dice = GameObject.FindGameObjectsWithTag("Die");
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
@@ -117,10 +121,16 @@ public class GameManager : SingletonPersistent<GameManager>
         startTime = Time.time;
         letterIndex++;
 
-
+        
+            
+        _healthBar.DecreaseHealth(); // tylko dla testu tutaj odpalam, bo nie wiem gdzie
     }
-
-
+    
+    private void LoadHealthBar()
+    {
+        _healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar.IHealthBar>();
+    }
+    
     private void Update()
     {
         CheckForLetterInTime();

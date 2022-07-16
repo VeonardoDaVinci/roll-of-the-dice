@@ -8,6 +8,7 @@ TagManager:
   - Word
   - Die
   - Arrow
+  - HealthBarPartial
   layers:
   - Default
   - TransparentFX
