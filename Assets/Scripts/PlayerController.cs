@@ -7,9 +7,14 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private GameManager gameManager;
+    private Animation anim;
     private void Start()
     {
+        anim = GetComponent<Animation>();
         gameManager = GameManager.Instance;
+        //anim.Play("cezar-anim");
+        //anim["cezar-anim"].speed = gameManager.bpm/(60*4);
+        anim["cezar-anim"].speed = 0.1f;
     }
     private void OnEnable()
     {

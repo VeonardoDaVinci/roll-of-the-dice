@@ -15,6 +15,14 @@ public class GameManager : SingletonPersistent<GameManager>
     public int letterIndex = 0;
     public char pressedChar;
 
+    public float bpm = 100;
+
+    public RectTransform arrow;
+
+    private AudioSource audioData;
+    public AudioClip drum1;
+    public AudioClip drum2;
+
     private TextMeshProUGUI wordObject;
     public string currentWord;
     private int wordIndex = 0;
@@ -31,12 +39,13 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void Start()
     {
+        audioData = GetComponent<AudioSource>();
         dice = GameObject.FindGameObjectsWithTag("Die");
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
         ChangeWord();
-
-        InvokeRepeating("ChangeLetter", 2f, 2f);
+        InvokeRepeating("PlayRythm", 60f/bpm, 60f/bpm);
+        InvokeRepeating("ChangeLetter", 30f/bpm, 30f/bpm);
         
         for(int die=0; die<dice.Length; die++)
         {
@@ -56,11 +65,17 @@ public class GameManager : SingletonPersistent<GameManager>
         }
         //Debug.Log(succesfulButtoPresses);
         succesfulButtonPresses = 0;
-
+        arrow.position = new Vector2(537f, arrow.position.y);
+        Debug.Log(arrow.position);
         System.Random rd = new System.Random();
         wordIndex = rd.Next(0, 999);
-        wordObject.text = Wordlist.SharedInstance.wordList[wordIndex].Replace(" ", "");
         currentWord = Wordlist.SharedInstance.wordList[wordIndex].Replace(" ", "");
+        wordObject.text = currentWord;
+    }
+
+    private void PlayRythm()
+    {
+        audioData.PlayOneShot(drum2);
     }
 
     private bool CheckForLetterInTime()
@@ -88,7 +103,8 @@ public class GameManager : SingletonPersistent<GameManager>
 
         pressedChar = ' ';
         pressed = false;
-
+        audioData.PlayOneShot(drum1);
+        arrow.position = new Vector2(arrow.position.x+23f, arrow.position.y);
         if (letterIndex >= currentWord.Length)
         {
             letterIndex = 0;
