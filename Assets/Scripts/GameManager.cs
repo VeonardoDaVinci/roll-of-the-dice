@@ -13,9 +13,12 @@ public class GameManager : SingletonPersistent<GameManager>
     public string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public TextMeshProUGUI letterObject;
+    public TextMeshProUGUI typedLetterObject;
     public char currentChar;
     public int letterIndex = 0;
     public char pressedChar;
+
+    //private Color green = new Color
 
     public float bpm;
 
@@ -37,7 +40,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private float startTime;
     private bool pressed = true;
 
-    private string gameState = "rythm";
+    private string gameState = "rhythm";
 
     public int succesfulButtonPresses = 0;
 
@@ -75,13 +78,13 @@ public class GameManager : SingletonPersistent<GameManager>
     private void StartRhythm()
     {
         InvokeRepeating(nameof(ChangeLetter), 60f / bpm, 60f / bpm);
-        InvokeRepeating(nameof(PlayRythm), 30f / bpm, 30f / bpm);
+        InvokeRepeating(nameof(PlayRhythm), 30f / bpm, 30f / bpm);
     }
     
     private void StopRhythm()
     {
         CancelInvoke(nameof(ChangeLetter));
-        CancelInvoke(nameof(PlayRythm));
+        CancelInvoke(nameof(PlayRhythm));
     }
 
     private void HandleGameOver()
@@ -99,6 +102,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
         dice = GameObject.FindGameObjectsWithTag("Die");
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
+        typedLetterObject = GameObject.FindGameObjectWithTag("TypedLetter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
     }
 
@@ -121,19 +125,23 @@ public class GameManager : SingletonPersistent<GameManager>
             Debug.Log(currentWord);
             diceCount++;
             dice[diceCount - 1].SetActive(true);
+            if (diceCount >= 6)
+            {
+                ChangeState();
+            }
         }
         else
         {
             ChangeState();
         }
         //Debug.Log(succesfulButtoPresses);
-        if (gameState == "rythm")
+        if (gameState == "rhythm")
         {
             SetWord();
         }
         else if (gameState == "hazard")
         {
-            CancelInvoke();
+            StopRhythm();
             if (dice.Length > 0)
             {
                 for (int a = 0; a <= dice.Length-1; a++)
@@ -146,10 +154,16 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void ChangeState()
     {
-        gameState = "hazard";
+        if(gameState == "rhythm")
+        {
+            gameState = "hazard";
+            return;
+        }
+        gameState = "rhythm";
+
     }
 
-    private void PlayRythm()
+    private void PlayRhythm()
     {
         audioData.PlayOneShot(drum2);
     }
@@ -217,6 +231,19 @@ public class GameManager : SingletonPersistent<GameManager>
         letterObject.text = currentChar.ToString();
     }
 
+    private void ShowTypedLetter()
+    {
+        typedLetterObject.text = pressedChar.ToString();
+        if (pressedChar == currentChar)
+        {
+            typedLetterObject.color = Color.green; 
+        }
+        else
+        {
+            typedLetterObject.color = Color.red;
+        }
+    }
+
     private void MoveArrowToNextLetter()
     {
         arrow.position = new Vector2(arrow.position.x + 23f, arrow.position.y);
@@ -241,6 +268,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private void Update()
     {
         CheckForLetterInTime();
+        ShowTypedLetter();
         Debug.Log(gameState);
         // Debug.Log(succesfulButtonPresses);
         // Debug.Log(currentWord.Length);
