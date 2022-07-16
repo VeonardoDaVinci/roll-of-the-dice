@@ -138,6 +138,11 @@ public class GameManager : SingletonPersistent<GameManager>
         {
             letterIndex = 0;
             ChangeWord();
+
+            pressedChar = ' ';
+            pressed = false;
+
+            return;
         }
 
         pressedChar = ' ';
