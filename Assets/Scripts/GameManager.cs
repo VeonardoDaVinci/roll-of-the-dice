@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using System;
+using HealthBar;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -28,9 +29,12 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private GameObject[] dice;
     public int diceCount = 0;
+    
+    private IHealthBar _healthBar;
 
     private void Start()
     {
+        LoadHealthBar();
         dice = GameObject.FindGameObjectsWithTag("Die");
         letterObject = GameObject.FindGameObjectWithTag("Letter").GetComponent<TextMeshProUGUI>();
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
@@ -45,12 +49,17 @@ public class GameManager : SingletonPersistent<GameManager>
 
     }
 
+    private void LoadHealthBar()
+    {
+        _healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar.IHealthBar>();
+    }
+
     private void ChangeWord()
     {
         if (succesfulButtonPresses == currentWord.Length-1)
         {
-            Debug.Log(succesfulButtonPresses);
-            Debug.Log(currentWord);
+            // Debug.Log(succesfulButtonPresses);
+            // Debug.Log(currentWord);
             diceCount++;
             dice[diceCount - 1].SetActive(true);
         }
@@ -102,14 +111,16 @@ public class GameManager : SingletonPersistent<GameManager>
         letterIndex++;
 
 
+            
+        _healthBar.DecreaseHealth(); // tylko dla testu tutaj odpalam, bo nie wiem gdzie
     }
 
 
     private void Update()
     {
         CheckForLetterInTime();
-        Debug.Log(succesfulButtonPresses);
-        Debug.Log(currentWord.Length);
+        // Debug.Log(succesfulButtonPresses);
+        // Debug.Log(currentWord.Length);
         //Debug.Log(dice.Length);
     }
 }
