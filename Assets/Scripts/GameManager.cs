@@ -36,9 +36,13 @@ public class GameManager : SingletonPersistent<GameManager>
     private float startTime;
     private bool pressed = true;
 
+    private string gameState = "rythm";
+
     public int succesfulButtonPresses = 0;
 
     private GameObject[] dice;
+    private GameObject[] enemyDice;
+
     public int diceCount = 0;
     private IHealthBar _healthBar;
 
@@ -46,11 +50,11 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         LoadHealthBar();
 
-        bpm = 20;
+        bpm = 50;
         
         LoadComponentsFromScreen();
         
-        ChangeWord();
+        SetWord();
         
         StartRythm();
 
@@ -84,6 +88,17 @@ public class GameManager : SingletonPersistent<GameManager>
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
     }
 
+    private void SetWord()
+    {
+        succesfulButtonPresses = 0;
+        arrow.position = new Vector2(537f, arrow.position.y);
+        Debug.Log(arrow.position);
+        System.Random rd = new System.Random();
+        wordIndex = rd.Next(0, 999);
+        currentWord = Wordlist.SharedInstance.wordList[wordIndex].Replace(" ", "");
+        wordObject.text = currentWord;
+    }
+
     private void ChangeWord()
     {
         if (succesfulButtonPresses == currentWord.Length-1)
@@ -93,14 +108,31 @@ public class GameManager : SingletonPersistent<GameManager>
             diceCount++;
             dice[diceCount - 1].SetActive(true);
         }
+        else
+        {
+            ChangeState();
+        }
         //Debug.Log(succesfulButtoPresses);
-        succesfulButtonPresses = 0;
-        arrow.position = new Vector2(537f, arrow.position.y);
-        Debug.Log(arrow.position);
-        System.Random rd = new System.Random();
-        wordIndex = rd.Next(0, 999);
-        currentWord = Wordlist.SharedInstance.wordList[wordIndex].Replace(" ", "");
-        wordObject.text = currentWord;
+        if (gameState == "rythm")
+        {
+            SetWord();
+        }
+        else if (gameState == "hazard")
+        {
+            CancelInvoke();
+            if (dice.Length > 0)
+            {
+                for (int a = 0; a <= dice.Length-1; a++)
+                {
+                    dice[a].GetComponent<DiceBehaviour>().SetRandomValue();
+                }
+            }
+        }
+    }
+
+    private void ChangeState()
+    {
+        gameState = "hazard";
     }
 
     private void PlayRythm()
@@ -195,6 +227,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private void Update()
     {
         CheckForLetterInTime();
+        Debug.Log(gameState);
         // Debug.Log(succesfulButtonPresses);
         // Debug.Log(currentWord.Length);
         //Debug.Log(dice.Length);
