@@ -15,6 +15,7 @@ TagManager:
   - EnemyDie
   - TypedLetter
   - Messege
+  - Score
   layers:
   - Default
   - TransparentFX
