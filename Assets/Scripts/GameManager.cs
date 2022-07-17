@@ -44,6 +44,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private bool letterChainBroken = false;
 
     public int score = 0;
+    public int invasionsDefeated = 0;
 
     private float startTime;
     private bool pressed = true;
@@ -64,20 +65,25 @@ public class GameManager : SingletonPersistent<GameManager>
 
     private void Start()
     {
+        //StartGame();
+
+    }
+
+    public void StartGame()
+    {
         InstantiateEvents();
         LoadHealthBar();
         HandleEvents();
 
         bpm = 50;
-        
+
         LoadComponentsFromScreen();
-        
+
         SetWord();
-        
+
         StartRhythm();
 
         SetDiceAsNotActiveByDefault();
-
     }
 
     private void InstantiateEvents()
@@ -145,8 +151,8 @@ public class GameManager : SingletonPersistent<GameManager>
     private void SetWord()
     {
         succesfulButtonPresses = 0;
-        arrow.position = new Vector2(537f, arrow.position.y);
-        Debug.Log(arrow.position);
+        //arrow.position = new Vector2(537f, arrow.position.y);
+        //Debug.Log(arrow.position);
         System.Random rd = new System.Random();
         wordIndex = rd.Next(0, 999);
         currentWord = Wordlist.SharedInstance.wordList[wordIndex].Replace(" ", "").ToLower();
@@ -196,7 +202,7 @@ public class GameManager : SingletonPersistent<GameManager>
         }
     }
 
-    private IEnumerator DetermineOutcome()
+    public IEnumerator DetermineOutcome()
     {
         valueSum = 0;
         enemyValueSum = 0;
@@ -230,7 +236,8 @@ public class GameManager : SingletonPersistent<GameManager>
         if (valueSum > enemyValueSum)
         {
             SetMessege("You've won. You keep your land");
-            score += 100;
+            //score += 100;
+            invasionsDefeated += 1;
             bpm += 10;
             StartCoroutine(RestartRound());
         }
@@ -238,13 +245,13 @@ public class GameManager : SingletonPersistent<GameManager>
         {
             SetMessege("I'm affraid you've lost a region");
             _healthBar.DecreaseHealth();
-            score -= 10;
+            //score -= 10;
             StartCoroutine(RestartRound());
         }
         else
         {
             SetMessege("A draw! Well that's anti-climactic");
-            score += 0;
+            //score += 0;
             StartCoroutine(RestartRound());
         }
     }
@@ -300,8 +307,9 @@ public class GameManager : SingletonPersistent<GameManager>
         else if (Time.time - startTime > 2f)
         {
             letterChainBroken = true;
+            //wordObject.color = Color.red;
             //ChangeWord();
-            
+
             return false;
         }
         return false;
@@ -321,7 +329,7 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         AnimateCharactersMovement();
         PlayDrum();
-        MoveArrowToNextLetter();
+        //MoveArrowToNextLetter();
 
         if (letterIndex >= (currentWord.Length - 1))
         {
@@ -391,7 +399,7 @@ public class GameManager : SingletonPersistent<GameManager>
         else
         {
             typedLetterObject.color = Color.red;
-            
+
             return;
         }
     }
@@ -401,10 +409,10 @@ public class GameManager : SingletonPersistent<GameManager>
         bpmObject.text = bpm.ToString();
     }
 
-    private void MoveArrowToNextLetter()
-    {
-        arrow.position = new Vector2(arrow.position.x + 23f, arrow.position.y);
-    }
+    //private void MoveArrowToNextLetter()
+    //{
+    //    arrow.position = new Vector2(arrow.position.x + 23f, arrow.position.y);
+    //}
 
     private void PlayDrum()
     {
@@ -428,6 +436,6 @@ public class GameManager : SingletonPersistent<GameManager>
         ShowTypedLetter();
         ShowBPM();
         //HandleChainBroken();
-        scoreObject.text = score.ToString();
+        scoreObject.text = invasionsDefeated.ToString();
     }
 }

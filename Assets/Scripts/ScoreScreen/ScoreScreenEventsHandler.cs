@@ -7,6 +7,8 @@ namespace ScoreScreen
     {
         public static void HandleGameOverEvent()
         {
+            GameManager gameManager = GameManager.Instance;
+            gameManager.StopCoroutine("DetermineOutcome");
             SceneManager.LoadScene("ScoreScreen");
         }
     }
