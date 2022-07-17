@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+﻿using GameScore;
 using UnityEngine.SceneManagement;
 
 namespace ScoreScreen
 {
-    public class ScoreScreenEventsHandler
+    public static class ScoreScreenEventsHandler
     {
-        public static void handleGameOverEvent()
+        public static void HandleGameOverEvent()
         {
             SceneManager.LoadScene("ScoreScreen");
         }

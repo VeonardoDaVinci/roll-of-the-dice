@@ -16,6 +16,7 @@ TagManager:
   - TypedLetter
   - Messege
   - Score
+  - ScoreTextBox
   layers:
   - Default
   - TransparentFX

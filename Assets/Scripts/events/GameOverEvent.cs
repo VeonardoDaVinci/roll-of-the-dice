@@ -1,6 +1,7 @@
-﻿using UnityEngine.Events;
+﻿using GameScore;
+using UnityEngine.Events;
 
-namespace HealthBar.events
+namespace events
 {
     public class GameOverEvent: UnityEvent
     {

@@ -7,7 +7,7 @@ namespace HealthBar
     internal interface IHealthBar
     {
         public void DecreaseHealth();
-        public GameOverEvent GameOverEvent { get; }
+        public HealthReachedZeroEvent HealthReachedZeroEvent { get; }
     }
     
     public class HealthBarBehaviourScript : MonoBehaviour, IHealthBar
@@ -20,7 +20,7 @@ namespace HealthBar
 
         private HealthValue _health;
 
-        public GameOverEvent GameOverEvent { get; private set; }
+        public HealthReachedZeroEvent HealthReachedZeroEvent { get; private set; }
 
         public HealthBarBehaviourScript()
         {
@@ -36,7 +36,7 @@ namespace HealthBar
 
         private void InstantiateEvents()
         {
-            GameOverEvent = new GameOverEvent();
+            HealthReachedZeroEvent = new HealthReachedZeroEvent();
         }
 
         public void DecreaseHealth()
@@ -54,7 +54,7 @@ namespace HealthBar
             }
             catch (HealthValueReachedZeroException e)
             {
-                GameOverEvent.Invoke();
+                HealthReachedZeroEvent.Invoke();
             }
         }
         

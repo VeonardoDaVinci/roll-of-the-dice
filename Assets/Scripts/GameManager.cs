@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using System;
+using events;
+using GameScore;
 using HealthBar;
 using ScoreScreen;
 using UnityEngine.SceneManagement;
@@ -53,11 +55,14 @@ public class GameManager : SingletonPersistent<GameManager>
 
     public int diceCount = 0;
     private IHealthBar _healthBar;
+    
+    public GameOverEvent GameOverEvent { get; private set; }
 
     private void Start()
     {
+        InstantiateEvents();
         LoadHealthBar();
-        HandleGameOver();
+        HandleEvents();
 
         bpm = 50;
         
@@ -69,6 +74,11 @@ public class GameManager : SingletonPersistent<GameManager>
 
         SetDiceAsNotActiveByDefault();
 
+    }
+
+    private void InstantiateEvents()
+    {
+        GameOverEvent = new GameOverEvent();
     }
 
     private void SetDiceAsNotActiveByDefault()
@@ -84,17 +94,30 @@ public class GameManager : SingletonPersistent<GameManager>
         InvokeRepeating(nameof(ChangeLetter), 60f / bpm, 60f / bpm);
         InvokeRepeating(nameof(PlayRhythm), 30f / bpm, 30f / bpm);
     }
-    
+
     private void StopRhythm()
     {
         CancelInvoke(nameof(ChangeLetter));
         CancelInvoke(nameof(PlayRhythm));
     }
 
-    private void HandleGameOver()
+    private void HandleEvents()
     {
-        // _healthBar.GameOverEvent.AddListener(ScoreScreenEventsHandler.handleGameOverEvent);
-        // _healthBar.GameOverEvent.AddListener(StopRhythm);
+        // uncomment to handle game over
+        _healthBar.HealthReachedZeroEvent.AddListener(StopRhythm);
+        _healthBar.HealthReachedZeroEvent.AddListener(GameOver);
+        
+        GameOverEvent.AddListener(ScoreScreenEventsHandler.HandleGameOverEvent);
+    }
+
+    private void GameOver()
+    {
+        GameOverEvent.Invoke();
+    }
+
+    public GameScoreValue GameScoreValue()
+    {
+        return new GameScoreValue(score);
     }
 
     private void LoadComponentsFromScreen()
@@ -160,7 +183,6 @@ public class GameManager : SingletonPersistent<GameManager>
             enemyValueSum = 0;
             if (dice.Length > 0)
             {
-                Debug.Log(dice.Length);
                 for (int a = 0; a <= dice.Length-1; a++)
                 {
                     if (dice[a].activeSelf == true)
@@ -171,8 +193,11 @@ public class GameManager : SingletonPersistent<GameManager>
                 }
             }
 
+            Debug.Log(enemyDice.Length);
             for(int b = 0; b <= enemyDice.Length-1; b++)
             {
+                Debug.Log("in enemy dice loop");
+                Debug.Log(enemyDice[b].GetComponent<DiceBehaviour>());
                 enemyDice[b].GetComponent<DiceBehaviour>().SetRandomValue();
                 enemyValueSum += enemyDice[b].GetComponent<DiceBehaviour>().value;
 
@@ -359,9 +384,5 @@ public class GameManager : SingletonPersistent<GameManager>
         CheckForLetterInTime();
         ShowTypedLetter();
         scoreObject.text = score.ToString();
-        Debug.Log(gameState);
-        // Debug.Log(succesfulButtonPresses);
-        // Debug.Log(currentWord.Length);
-        //Debug.Log(dice.Length);
     }
 }
