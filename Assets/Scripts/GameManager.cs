@@ -246,7 +246,10 @@ public class GameManager : SingletonPersistent<GameManager>
             SetMessege("I'm affraid you've lost a region");
             _healthBar.DecreaseHealth();
             //score -= 10;
-            StartCoroutine(RestartRound());
+            if (!_healthBar.ReachedZero())
+            {
+                StartCoroutine(RestartRound());
+            }
         }
         else
         {
@@ -256,7 +259,7 @@ public class GameManager : SingletonPersistent<GameManager>
         }
     }
 
-    private IEnumerator RestartRound()
+    public IEnumerator RestartRound()
     {
         yield return new WaitForSeconds(2.0f);
 

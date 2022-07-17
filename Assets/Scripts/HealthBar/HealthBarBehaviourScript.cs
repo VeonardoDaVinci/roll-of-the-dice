@@ -7,6 +7,9 @@ namespace HealthBar
     internal interface IHealthBar
     {
         public void DecreaseHealth();
+
+        public bool ReachedZero();
+        
         public HealthReachedZeroEvent HealthReachedZeroEvent { get; }
     }
     
@@ -41,7 +44,7 @@ namespace HealthBar
 
         public void DecreaseHealth()
         {
-            if (_health.ReachedZero())
+            if (ReachedZero())
             {
                 return;
             }
@@ -57,7 +60,12 @@ namespace HealthBar
                 HealthReachedZeroEvent.Invoke();
             }
         }
-        
+
+        public bool ReachedZero()
+        {
+            return _health.ReachedZero();
+        }
+
         private void HideNextBarPartial()
         {
             var partialNumber = _health.GetTakenHitsCount() + 1;
