@@ -19,6 +19,8 @@ TagManager:
   - ScoreTextBox
   - Bpm
   - GameManager
+  - InvasionCount
+  - BpmCount
   layers:
   - Default
   - TransparentFX

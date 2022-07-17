@@ -2,11 +2,13 @@
 {
     public class GameScoreValue
     {
-        public int Score { get; }
+        public int invasions { get; }
+        public int bpm { get; }
 
-        public GameScoreValue(int score)
+        public GameScoreValue(int invasionsDefeated, int bpmValue)
         {
-            Score = score;
+            invasions = invasionsDefeated;
+            bpm = bpmValue;
         }
     }
 }

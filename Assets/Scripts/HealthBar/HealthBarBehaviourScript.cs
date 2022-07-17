@@ -16,7 +16,7 @@ namespace HealthBar
     public class HealthBarBehaviourScript : MonoBehaviour, IHealthBar
     {
         private const string HealthBarPartialTag = "HealthBarPartial";
-        private const int MaxHealthValue = 1;
+        private const int MaxHealthValue = 7;
         private const int HealthDecreaseStep = 1;
     
         private SpriteRenderer[] _partials;

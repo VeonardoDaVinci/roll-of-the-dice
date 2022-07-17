@@ -25,7 +25,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private TextMeshProUGUI scoreObject;
     private TextMeshProUGUI bpmObject;
 
-    public float bpm;
+    public int bpm;
 
     public PlayerController player;
     public EnemyBehaviour enemy;
@@ -76,6 +76,8 @@ public class GameManager : SingletonPersistent<GameManager>
         HandleEvents();
 
         bpm = 50;
+
+        invasionsDefeated = 0;
 
         LoadComponentsFromScreen();
 
@@ -129,7 +131,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
     public GameScoreValue GameScoreValue()
     {
-        return new GameScoreValue(score);
+        return new GameScoreValue(invasionsDefeated, bpm);
     }
 
     private void LoadComponentsFromScreen()
