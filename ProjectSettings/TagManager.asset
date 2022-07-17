@@ -17,6 +17,7 @@ TagManager:
   - Messege
   - Score
   - ScoreTextBox
+  - Bpm
   layers:
   - Default
   - TransparentFX
