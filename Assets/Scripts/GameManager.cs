@@ -35,6 +35,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private AudioSource audioData;
     public AudioClip drum1;
     public AudioClip drum2;
+    public AudioClip drumRoll;
 
     private TextMeshProUGUI wordObject;
     public string currentWord;
@@ -148,7 +149,7 @@ public class GameManager : SingletonPersistent<GameManager>
         Debug.Log(arrow.position);
         System.Random rd = new System.Random();
         wordIndex = rd.Next(0, 999);
-        currentWord = Wordlist.SharedInstance.wordList[wordIndex].Replace(" ", "");
+        currentWord = Wordlist.SharedInstance.wordList[wordIndex].Replace(" ", "").ToLower();
         wordObject.text = currentWord;
     }
 
@@ -189,50 +190,62 @@ public class GameManager : SingletonPersistent<GameManager>
         else if (gameState == "hazard")
         {
             StopRhythm();
-            valueSum = 0;
-            enemyValueSum = 0;
-            if (dice.Length > 0)
+            StartCoroutine(DetermineOutcome());
+
+            
+        }
+    }
+
+    private IEnumerator DetermineOutcome()
+    {
+        valueSum = 0;
+        enemyValueSum = 0;
+        audioData.PlayOneShot(drumRoll);
+
+        yield return new WaitForSeconds(3.0f);
+
+        if (dice.Length > 0)
+        {
+            for (int a = 0; a <= dice.Length - 1; a++)
             {
-                for (int a = 0; a <= dice.Length - 1; a++)
+                if (dice[a].activeSelf == true)
                 {
-                    if (dice[a].activeSelf == true)
-                    {
-                        dice[a].GetComponent<DiceBehaviour>().SetRandomValue();
-                        valueSum += dice[a].GetComponent<DiceBehaviour>().value;
-                    }
+
+                    dice[a].GetComponent<DiceBehaviour>().SetRandomValue();
+                    valueSum += dice[a].GetComponent<DiceBehaviour>().value;
                 }
             }
+        }
 
-            Debug.Log(enemyDice.Length);
-            for (int b = 0; b <= enemyDice.Length - 1; b++)
-            {
-                Debug.Log("in enemy dice loop");
-                Debug.Log(enemyDice[b].GetComponent<DiceBehaviour>());
-                enemyDice[b].GetComponent<DiceBehaviour>().SetRandomValue();
-                enemyValueSum += enemyDice[b].GetComponent<DiceBehaviour>().value;
+        Debug.Log(enemyDice.Length);
+        for (int b = 0; b <= enemyDice.Length - 1; b++)
+        {
+            Debug.Log("in enemy dice loop");
+            Debug.Log(enemyDice[b].GetComponent<DiceBehaviour>());
+            enemyDice[b].GetComponent<DiceBehaviour>().SetRandomValue();
+            enemyValueSum += enemyDice[b].GetComponent<DiceBehaviour>().value;
 
-            }
+        }
 
-            if (valueSum > enemyValueSum)
-            {
-                SetMessege("You've won. You keep your land");
-                score += 100;
-                bpm += 10;
-                StartCoroutine(RestartRound());
-            }
-            else if (valueSum < enemyValueSum)
-            {
-                SetMessege("I'm affraid you've lost a region");
-                _healthBar.DecreaseHealth();
-                score -= 10;
-                StartCoroutine(RestartRound());
-            }
-            else
-            {
-                SetMessege("A draw! Well that's anti-climactic");
-                score += 0;
-                StartCoroutine(RestartRound());
-            }
+        if (valueSum > enemyValueSum)
+        {
+            SetMessege("You've won. You keep your land");
+            score += 100;
+            bpm += 10;
+            StartCoroutine(RestartRound());
+        }
+        else if (valueSum < enemyValueSum)
+        {
+            SetMessege("I'm affraid you've lost a region");
+            _healthBar.DecreaseHealth();
+            score -= 10;
+            StartCoroutine(RestartRound());
+        }
+        else
+        {
+            SetMessege("A draw! Well that's anti-climactic");
+            score += 0;
+            StartCoroutine(RestartRound());
         }
     }
 

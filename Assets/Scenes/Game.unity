@@ -876,6 +876,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: af47e468afd30814badda473bc425c20, type: 3}
     - target: {fileID: 6981282638244250475, guid: c86b8992500f2a4459ed73aeb2303060, type: 3}
+      propertyPath: drumRoll
+      value: 
+      objectReference: {fileID: 8300000, guid: bcb865b5b24da7649807b256802bd1ee, type: 3}
+    - target: {fileID: 6981282638244250475, guid: c86b8992500f2a4459ed73aeb2303060, type: 3}
       propertyPath: succesfulButtonPresses
       value: 0
       objectReference: {fileID: 0}
@@ -926,7 +930,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561516846}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.79, y: -2.5, z: -0.06283966}
+  m_LocalPosition: {x: 2.48, y: 0.08, z: -0.06283966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1931,7 +1935,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398341802}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: -1, z: 0}
+  m_LocalPosition: {x: 4.3, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
