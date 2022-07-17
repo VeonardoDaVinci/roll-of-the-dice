@@ -20,6 +20,8 @@ public class DiceBehaviour : MonoBehaviour
 
     public void SetRandomValue()
     {
+        
+        Debug.Log("set random value");
         diceAnimator.enabled = false;
         value = Random.Range(1, 6);
         diceRenderer.sprite = diceSprites[value - 1];
