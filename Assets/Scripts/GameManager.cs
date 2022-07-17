@@ -83,6 +83,8 @@ public class GameManager : SingletonPersistent<GameManager>
 
         StartRhythm();
 
+        gameState = "rhythm";
+
         SetDiceAsNotActiveByDefault();
     }
 
@@ -276,6 +278,11 @@ public class GameManager : SingletonPersistent<GameManager>
         ResetDiceState();
 
         SetDiceAsNotActiveByDefault();
+    }
+
+    private void StartRound()
+    {
+
     }
 
     private void ChangeState()
