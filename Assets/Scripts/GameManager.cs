@@ -23,6 +23,7 @@ public class GameManager : SingletonPersistent<GameManager>
     //private Color green = new Color
     public TextMeshProUGUI messegeObject;
     private TextMeshProUGUI scoreObject;
+    private TextMeshProUGUI bpmObject;
 
     public float bpm;
 
@@ -38,6 +39,8 @@ public class GameManager : SingletonPersistent<GameManager>
     private TextMeshProUGUI wordObject;
     public string currentWord;
     private int wordIndex = 0;
+
+    private bool letterChainBroken = false;
 
     public int score = 0;
 
@@ -135,6 +138,7 @@ public class GameManager : SingletonPersistent<GameManager>
         wordObject = GameObject.FindGameObjectWithTag("Word").GetComponent<TextMeshProUGUI>();
         messegeObject = GameObject.FindGameObjectWithTag("Messege").GetComponent<TextMeshProUGUI>();
         scoreObject = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
+        bpmObject = GameObject.FindGameObjectWithTag("Bpm").GetComponent<TextMeshProUGUI>();
     }
 
     private void SetWord()
@@ -172,6 +176,12 @@ public class GameManager : SingletonPersistent<GameManager>
             ChangeState();
         }
         //Debug.Log(succesfulButtoPresses);
+        ContinueAfterCheckForWord();
+        
+    }
+
+    private void ContinueAfterCheckForWord()
+    {
         if (gameState == "rhythm")
         {
             SetWord();
@@ -183,7 +193,7 @@ public class GameManager : SingletonPersistent<GameManager>
             enemyValueSum = 0;
             if (dice.Length > 0)
             {
-                for (int a = 0; a <= dice.Length-1; a++)
+                for (int a = 0; a <= dice.Length - 1; a++)
                 {
                     if (dice[a].activeSelf == true)
                     {
@@ -194,7 +204,7 @@ public class GameManager : SingletonPersistent<GameManager>
             }
 
             Debug.Log(enemyDice.Length);
-            for(int b = 0; b <= enemyDice.Length-1; b++)
+            for (int b = 0; b <= enemyDice.Length - 1; b++)
             {
                 Debug.Log("in enemy dice loop");
                 Debug.Log(enemyDice[b].GetComponent<DiceBehaviour>());
@@ -207,6 +217,7 @@ public class GameManager : SingletonPersistent<GameManager>
             {
                 SetMessege("You've won. You keep your land");
                 score += 100;
+                bpm += 10;
                 StartCoroutine(RestartRound());
             }
             else if (valueSum < enemyValueSum)
@@ -222,7 +233,6 @@ public class GameManager : SingletonPersistent<GameManager>
                 score += 0;
                 StartCoroutine(RestartRound());
             }
-
         }
     }
 
@@ -276,9 +286,22 @@ public class GameManager : SingletonPersistent<GameManager>
         }
         else if (Time.time - startTime > 2f)
         {
+            letterChainBroken = true;
+            //ChangeWord();
+            
             return false;
         }
         return false;
+    }
+
+    private void HandleChainBroken()
+    {
+        if (letterChainBroken == true)
+        {
+            letterChainBroken = false;
+            ChangeState();
+            ContinueAfterCheckForWord();
+        }
     }
 
     private void ChangeLetter()
@@ -355,7 +378,14 @@ public class GameManager : SingletonPersistent<GameManager>
         else
         {
             typedLetterObject.color = Color.red;
+            
+            return;
         }
+    }
+
+    void ShowBPM()
+    {
+        bpmObject.text = bpm.ToString();
     }
 
     private void MoveArrowToNextLetter()
@@ -383,6 +413,8 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         CheckForLetterInTime();
         ShowTypedLetter();
+        ShowBPM();
+        //HandleChainBroken();
         scoreObject.text = score.ToString();
     }
 }
